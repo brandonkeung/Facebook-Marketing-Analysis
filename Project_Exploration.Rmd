@@ -1,0 +1,109 @@
+---
+title: "Project_Exploration"
+author: "Brandon Keung"
+date: "2024-03-13"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(bayesrules)
+library(tidyverse)
+library(tidybayes)
+library(bayesplot)
+library(rstanarm)
+library(forcats)
+
+# library(brms)
+library(broom.mixed)
+library(dplyr)
+```
+
+```{r}
+data <- read.csv("C:\\Users\\blkeu\\OneDrive\\Documents\\STATS115\\facebook+metrics\\dataset_Facebook.csv", sep=";")
+
+data$index <- seq_along(data$Page.total.likes)
+
+data
+```
+
+```{r}
+fb_data <- data %>% 
+  select(index, Post.Month, Total.Interactions, Lifetime.Engaged.Users)
+
+fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
+
+head(fb_data)
+```
+
+
+```{r}
+fb_means <- fb_data %>% 
+  group_by(Post.Month) %>% 
+  summarize(count = n(), avg_interactions = mean(Total.Interactions))
+
+fb_means
+```
+
+```{r}
+ggplot(fb_data, aes(x = Total.Interactions, group = Post.Month)) + 
+  geom_density()
+```
+
+```{r}
+mean(fb_data$Total.Interactions)
+```
+
+```{r}
+fb_hierarchical <- stan_glmer(
+  Total.Interactions ~ (1 | Post.Month), 
+  data = fb_data, family = Gamma,
+  prior_intercept = normal(212.12, 2.5, autoscale = TRUE),
+  prior_aux = exponential(1, autoscale = TRUE),
+  prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
+  chains = 4, iter = 5000*2, seed = 84735)
+```
+
+
+```{r}
+mcmc_trace(fb_hierarchical)
+mcmc_acf(fb_hierarchical)
+neff_ratio(fb_hierarchical)
+rhat(fb_hierarchical)
+```
+
+```{r}
+pp_check(fb_hierarchical)
+```
+
+```{r}
+fb2_hierarchical <- stan_glmer(
+  Total.Interactions ~ Lifetime.Engaged.Users + (1 | Post.Month), 
+  data = fb_data, family = Gamma,
+  prior_intercept = normal(212.12, 2.5, autoscale = TRUE),
+  prior_aux = exponential(1, autoscale = TRUE),
+  prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
+  chains = 4, iter = 5000*2, seed = 84735)
+```
+
+
+```{r}
+mcmc_trace(fb2_hierarchical)
+mcmc_acf(fb2_hierarchical)
+neff_ratio(fb2_hierarchical)
+rhat(fb2_hierarchical)
+```
+
+```{r}
+pp_check(fb2_hierarchical)
+```
+
+
+
+
+
+
+

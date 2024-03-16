@@ -1,0 +1,26 @@
+---
+title: "Stats 6 Group 4 / Spotify Dataset"
+format: revealjs
+editor: visual
+author: Anthony, Ghadah, Brandon, Nicholas, Vinh
+---
+
+
+## Facebook Dataset
+
+2014 Facebook performance metrics of a renowned cosmetic's brand containing 500 observations (posts) and 20 variables to describe its engagement 
+
+```{r}
+data <- read.csv("../data/dataset_Facebook.csv", sep = ";")
+data$index <- seq_along(data$Page.total.likes)
+head(data)
+```
+## Hypothesis Testing
+
+## Model
+
+## Credible Interval
+
+## Posterior Predictions
+
+## Results

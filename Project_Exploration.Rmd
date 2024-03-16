@@ -71,8 +71,10 @@ fb_means
 ```
 
 ```{r}
-ggplot(fb_data, aes(x = Total.Interactions, group = Post.Month)) + 
-  geom_density()
+fb_plot_data <- fb_data
+fb_plot_data$Post.Month <- as.factor(fb_plot_data$Post.Month)
+ggplot(fb_plot_data, aes(x = Total.Interactions, group = Post.Month)) + 
+  geom_density(aes(color = Post.Month))
 ```
 
 ```{r}
@@ -82,13 +84,13 @@ mean(fb_data$Total.Interactions)
 ```{r}
 fb_hierarchical <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
-  data = fb_data, family = Gamma,
-  prior_intercept = normal(212.12, 25, autoscale = TRUE),
+  data = fb_data_poisson, family = poisson(),
+  prior_intercept = normal(212.12, 100, autoscale = TRUE),
   prior_aux = exponential(1, autoscale = TRUE),
   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
   chains = 4, iter = 5000*2, seed = 84735)
 
-prior_summary(fb_hierarchical)
+summary(fb_hierarchical)
 ```
 
 ```{r}
@@ -131,14 +133,19 @@ fb_chains %>%
 # Get posterior summaries
 fb_summary_scaled <- fb_chains %>% 
   select(-`(Intercept)`, -b) %>% 
-  mean_qi(.width = 0.80) %>% 
-  mutate(Post.Month = fct_reorder(Post.Month, mu_j))
+  mean_qi(.width = 0.8) %>% 
+  mutate(Post.Month = fct_reorder(Post.Month, mu_j),
+         exp_mu_j = exp(mu_j),
+         exp_lower = exp(.lower),
+         exp_upper = exp(.upper))
+
+fb_summary_scaled
 ```
 
 ```{r}
 # Plot by INCREASING mu_j
 ggplot(fb_summary_scaled, 
-       aes(x = Post.Month, y = mu_j, ymin = .lower, ymax = .upper)) +
+       aes(x = Post.Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
   xaxis_text(angle = 90, hjust = 1) +
   labs(title = "Mean Facebook Post Interaction Count by Month")
@@ -146,7 +153,7 @@ ggplot(fb_summary_scaled,
 # Plot by MONTH ORDER
 fb_summary_scaled$Month <- as.integer(gsub("Post.Month:", "", fb_summary_scaled$Post.Month))
 ggplot(fb_summary_scaled, 
-       aes(x = Month, y = mu_j, ymin = .lower, ymax = .upper)) +
+       aes(x = Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
   xaxis_text(angle = 90, hjust = 1) +
   labs(title = "Mean Facebook Post Interaction Count by Month")
@@ -162,8 +169,8 @@ ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical,
               prob_outer = 0.80) +
   ggplot2::scale_x_continuous(labels = fb_means$Post.Month, 
                               breaks = 1:nrow(fb_means)) +
-  xaxis_text(angle = 90, hjust = 1) 
-  #geom_hline(yintercept = 58.4, linetype = "dashed")
+  xaxis_text(angle = 90, hjust = 1) +
+  geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
 
 ```
 
@@ -192,7 +199,43 @@ pp_check(fb2_hierarchical)
 ```
 
 
+# Poisson regression - Ch. 12
+```{r}
+fb_data_poisson <- data
+fb_data_poisson <- na.omit(fb_data_poisson)
+fb_poisson_model_prior <- stan_glm(Total.Interactions ~ Post.Month + Paid, 
+                                 data = fb_data_poisson, 
+                                 family = poisson,
+                                 prior_intercept = normal(212, 25),
+                                 prior = normal(212, 25, autoscale = TRUE),
+                                 chains = 4, iter = 5000*2, seed = 84735, 
+                                 prior_PD = TRUE)
 
+prior_summary(fb_poisson_model_prior)
+```
+
+```{r}
+fb_data_poisson %>%
+  add_fitted_draws(fb_poisson_model_prior, n = 100) %>%
+  ggplot(aes(x = Post.Month, y = Total.Interactions, color = Paid)) +
+    geom_line(aes(y = .value, group = paste(Paid, .draw))) + 
+    ylim(0, 100)
+```
+
+```{r}
+fb_poisson_model_prior <- update(fb_poisson_model_prior, prior_PD = FALSE)
+
+mcmc_trace(fb_poisson_model_prior)
+mcmc_dens_overlay(fb_poisson_model_prior)
+mcmc_acf(fb_poisson_model_prior)
+```
+
+```{r}
+# pp_check(fb_poisson_model_prior, plotfun = "hist", nreps = 5) + 
+#   xlab("laws")
+pp_check(fb_poisson_model_prior) + 
+  xlab("laws")
+```
 
 
 

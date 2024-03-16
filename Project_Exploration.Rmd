@@ -23,7 +23,10 @@ library(dplyr)
 ```
 
 ```{r}
-data <- read.csv("C:\\Users\\blkeu\\OneDrive\\Documents\\STATS115\\facebook+metrics\\dataset_Facebook.csv", sep=";")
+#data <- read.csv("C:\\Users\\blkeu\\OneDrive\\Documents\\STATS115\\facebook+metrics\\dataset_Facebook.csv", sep=";")
+
+data <- read.csv("facebook+metrics/dataset_Facebook.csv", sep = ";")
+
 
 data$index <- seq_along(data$Page.total.likes)
 
@@ -32,11 +35,30 @@ data
 
 ```{r}
 fb_data <- data %>% 
-  select(index, Post.Month, Total.Interactions, Lifetime.Engaged.Users)
+  select(index, Post.Month, Post.Weekday, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
 
 fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
 
 head(fb_data)
+```
+
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Paid <- factor(plot_df$Paid)
+plot_df$Post.Month <- factor(plot_df$Post.Month)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Paid, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Paid), group = Paid)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Month and Paid Status",
+       x = "Post Month", y = "Average Post Interactions", color = "Paid Status") +
+  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+                     labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
 ```
 
 
@@ -61,10 +83,25 @@ mean(fb_data$Total.Interactions)
 fb_hierarchical <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
   data = fb_data, family = Gamma,
-  prior_intercept = normal(212.12, 2.5, autoscale = TRUE),
+  prior_intercept = normal(212.12, 25, autoscale = TRUE),
   prior_aux = exponential(1, autoscale = TRUE),
   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
   chains = 4, iter = 5000*2, seed = 84735)
+
+prior_summary(fb_hierarchical)
+```
+
+```{r}
+tidy(fb_hierarchical, effects = "fixed", 
+     conf.int = TRUE, conf.level = 0.80)
+
+month_summary <- tidy(fb_hierarchical, effects = "ran_vals", 
+                       conf.int = TRUE, conf.level = 0.80)
+
+# Check out the results for the first & last 2 artists
+month_summary %>% 
+  select(level, conf.low, conf.high) %>% 
+  slice(1:5)
 ```
 
 
@@ -78,6 +115,59 @@ rhat(fb_hierarchical)
 ```{r}
 pp_check(fb_hierarchical)
 ```
+
+```{r}
+# Get MCMC chains
+fb_chains <- fb_hierarchical %>%
+  spread_draws(`(Intercept)`, b[,Post.Month]) %>% 
+  mutate(mu_j = `(Intercept)` + b)
+
+fb_chains %>% 
+  select(Post.Month, `(Intercept)`, b, mu_j) %>% 
+  head(4)
+```
+
+```{r}
+# Get posterior summaries
+fb_summary_scaled <- fb_chains %>% 
+  select(-`(Intercept)`, -b) %>% 
+  mean_qi(.width = 0.80) %>% 
+  mutate(Post.Month = fct_reorder(Post.Month, mu_j))
+```
+
+```{r}
+# Plot by INCREASING mu_j
+ggplot(fb_summary_scaled, 
+       aes(x = Post.Month, y = mu_j, ymin = .lower, ymax = .upper)) +
+  geom_pointrange() +
+  xaxis_text(angle = 90, hjust = 1) +
+  labs(title = "Mean Facebook Post Interaction Count by Month")
+
+# Plot by MONTH ORDER
+fb_summary_scaled$Month <- as.integer(gsub("Post.Month:", "", fb_summary_scaled$Post.Month))
+ggplot(fb_summary_scaled, 
+       aes(x = Month, y = mu_j, ymin = .lower, ymax = .upper)) +
+  geom_pointrange() +
+  xaxis_text(angle = 90, hjust = 1) +
+  labs(title = "Mean Facebook Post Interaction Count by Month")
+```
+
+```{r}
+# Posterior prediction
+set.seed(84735)
+predictions_hierarchical <- posterior_predict(fb_hierarchical, newdata = fb_means)
+
+# Posterior predictive plots
+ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical, 
+              prob_outer = 0.80) +
+  ggplot2::scale_x_continuous(labels = fb_means$Post.Month, 
+                              breaks = 1:nrow(fb_means)) +
+  xaxis_text(angle = 90, hjust = 1) 
+  #geom_hline(yintercept = 58.4, linetype = "dashed")
+
+```
+
+
 
 ```{r}
 fb2_hierarchical <- stan_glmer(
@@ -100,6 +190,10 @@ rhat(fb2_hierarchical)
 ```{r}
 pp_check(fb2_hierarchical)
 ```
+
+
+
+
 
 
 

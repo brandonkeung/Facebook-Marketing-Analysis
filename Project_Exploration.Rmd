@@ -43,14 +43,15 @@ head(fb_data)
 ```
 
 ```{r}
-# Graph of interactions by month for paid vs non-paid posts
+# Turn paid status and month into factors
 plot_df <- fb_data
-
 plot_df$Paid <- factor(plot_df$Paid)
 plot_df$Post.Month <- factor(plot_df$Post.Month)
 
+# Find average interactions by month, for each paid status value
 interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Paid, data = plot_df, FUN = mean)
 
+# Graph of interactions by month for paid vs non-paid posts
 ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Paid), group = Paid)) +
   geom_line() +
   labs(title = "Average Post Interactions by Month and Paid Status",
@@ -58,7 +59,6 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
   scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
                      labels = c("Not Paid", "Paid")) +
   theme_minimal()
-
 ```
 
 ```{r}
@@ -99,22 +99,19 @@ ggplot(interaction_avg, aes(x = Post.Hour, y = Total.Interactions, color = facto
 ```
 
 ```{r}
-# Graph of interactions by month for paid vs non-paid posts
+# Turn month into a factor
 plot_df <- fb_data
-
-plot_df$Type <- factor(plot_df$Type)
 plot_df$Post.Month <- factor(plot_df$Post.Month)
 
+# Find average interactions by month, for each post type
 interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Type, data = plot_df, FUN = mean)
 
+# Graph of interactions by month
 ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Type), group = Type)) +
   geom_line() +
-  labs(title = "Average Post Interactions by Month and Paid Status",
-       x = "Post Month", y = "Average Post Interactions", color = "Post Type") +
-  #scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
-   #                  labels = c("Not Paid", "Paid")) +
+  labs(title = "Average Post Interactions by Month and Type",
+       x = "Post Month", y = "Avg Post Interactions", color = "Post Type") +
   theme_minimal()
-
 ```
 
 ```{r}

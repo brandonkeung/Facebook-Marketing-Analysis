@@ -1,20 +1,96 @@
 ---
-title: "Stats 6 Group 4 / Spotify Dataset"
+title: "Marketing on Facebook: Temporal and Targeted Approaches"
 format: revealjs
 editor: visual
 author: Anthony, Ghadah, Brandon, Nicholas, Vinh
 ---
 
+```{r}
+# Import libraries
+library(bayesrules)
+library(tidyverse)
+library(tidybayes)
+library(bayesplot)
+library(rstanarm)
+library(forcats)
+library(broom.mixed)
+library(dplyr)
+```
 
 ## Facebook Dataset
 
-2014 Facebook performance metrics of a renowned cosmetic's brand containing 500 observations (posts) and 20 variables to describe its engagement 
+2014 Facebook performance metrics of a renowned cosmetics brand containing 500 observations (posts) and 20 variables to describe its engagement
 
 ```{r}
 data <- read.csv("../data/dataset_Facebook.csv", sep = ";")
 data$index <- seq_along(data$Page.total.likes)
 head(data)
 ```
+
+## Distribution of Interactions
+
+We notice that "link" posts tend to have lower but more consistent interaction counts, while "video" posts tend to have a much larger variance in their interaction counts.
+
+```{r}
+# Density plots for each post types
+ggplot(data, aes(x = Total.Interactions, group = Type)) + 
+  geom_density(aes(color = Type, fill = Type), alpha = 0.3) +
+  xlim(c(0, 1000)) +
+  labs(title = "Distribution of Interaction Counts by Post Type", x = "Total Interaction Count", y = "Density")
+```
+
+## Interactions by Month and Post Type 
+
+Temporally, photos and links tend to stay fairly consistent while status posts appear to spike in interactions in April and October.
+
+```{r}
+# Turn month into a factor
+plot_df <- data
+plot_df$Post.Month <- factor(plot_df$Post.Month)
+
+# Find average interactions by month, for each post type
+interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Type, data = plot_df, FUN = mean)
+
+# Graph of interactions by month
+ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Type), group = Type)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Month and Type",
+       x = "Post Month", y = "Avg Post Interactions", color = "Post Type") +
+  theme_minimal()
+```
+
+Note: No video post data exist for months 1-5
+
+## Interactions by Month and Paid Status
+
+Paid posts appear to not provide a major advantage, except for in July and during the "holiday season" (Nov - Dec).
+
+```{r}
+# Turn paid status and month into factors
+plot_df <- data
+plot_df$Paid <- factor(plot_df$Paid)
+plot_df$Post.Month <- factor(plot_df$Post.Month)
+
+# Find average interactions by month, for each paid status value
+interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Paid, data = plot_df, FUN = mean)
+
+# Graph of interactions by month for paid vs non-paid posts
+ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Paid), group = Paid)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Month and Paid Status",
+       x = "Post Month", y = "Average Post Interactions", color = "Paid Status") +
+  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+                     labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+```
+
+## Research Questions
+
+To explore these patterns, we tackle the following:
+
+1.  a
+2.  a
+
 ## Hypothesis Testing
 
 ## Model

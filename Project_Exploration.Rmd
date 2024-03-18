@@ -25,7 +25,7 @@ library(dplyr)
 ```{r}
 #data <- read.csv("C:\\Users\\blkeu\\OneDrive\\Documents\\STATS115\\facebook+metrics\\dataset_Facebook.csv", sep=";")
 
-data <- read.csv("facebook+metrics/dataset_Facebook.csv", sep = ";")
+data <- read.csv("data/dataset_Facebook.csv", sep = ";")
 
 
 data$index <- seq_along(data$Page.total.likes)
@@ -190,7 +190,7 @@ mean(fb_data$Total.Interactions)
 ```{r}
 fb_hierarchical <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
-  data = fb_data_poisson, family = poisson(),
+  data = data, family = neg_binomial_2,
   prior_intercept = normal(212.12, 100, autoscale = TRUE),
   prior_aux = exponential(1, autoscale = TRUE),
   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
@@ -198,6 +198,7 @@ fb_hierarchical <- stan_glmer(
 
 summary(fb_hierarchical)
 ```
+
 
 ```{r}
 tidy(fb_hierarchical, effects = "fixed", 
@@ -279,6 +280,24 @@ ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical,
   geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
 
 ```
+
+Hypothesis testing
+Find the 95% CI for mu and check if all mu_j fall within the 95% CI
+```{r}
+posterior_interval(fb_hierarchical, prob = 0.95)
+```
+
+```{r}
+fb_summary_scaled
+```
+$H_o$ = All $\mu_j$ are equal
+$H_\alpha$ = The null hypothesis is not true.
+With 95% CI for $\mu$ being (5.12211236, 5.5221324), Not all of the $\mu_j$ fall within this range. Therefore we can reject the null hypothesis and conclude that not all $\mu_j$ are equal.
+
+
+
+EVERYTHING BELOW THIS MAY NOT BE USEFUL AS NEGATIVE BINOMIAL SEEMS LIKE THE RIGHT FAMILY TO USE
+
 
 
 

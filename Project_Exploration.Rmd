@@ -343,7 +343,11 @@ pp_check(fb_poisson_model_prior) +
   xlab("laws")
 ```
 
-
+```{r}
+credible_intervals <- tidy(fb_poisson_model_prior, conf.int = TRUE, conf.level = 0.95)
+# View the credible intervals
+print(credible_intervals)
+```
 
 
 

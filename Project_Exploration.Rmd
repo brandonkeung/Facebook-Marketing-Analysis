@@ -35,7 +35,7 @@ data
 
 ```{r}
 fb_data <- data %>% 
-  select(index, Post.Month, Post.Weekday, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
+  select(index, Post.Month, Post.Weekday, Post.Hour, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
 
 fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
 
@@ -61,6 +61,112 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
 
 ```
 
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Paid <- factor(plot_df$Paid)
+plot_df$Post.Weekday <- factor(plot_df$Post.Weekday)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Weekday + Paid, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Weekday, y = Total.Interactions, color = factor(Paid), group = Paid)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Weekday and Paid Status",
+       x = "Post Weekday", y = "Average Post Interactions", color = "Paid Status") +
+  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+                     labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
+```
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Paid <- factor(plot_df$Paid)
+plot_df$Post.Hour <- factor(plot_df$Post.Hour)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Hour + Paid, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Hour, y = Total.Interactions, color = factor(Paid), group = Paid)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Hour and Paid Status",
+       x = "Post Hour", y = "Average Post Interactions", color = "Paid Status") +
+  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+                     labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
+```
+
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Type <- factor(plot_df$Type)
+plot_df$Post.Month <- factor(plot_df$Post.Month)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Type, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Type), group = Type)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Month and Paid Status",
+       x = "Post Month", y = "Average Post Interactions", color = "Post Type") +
+  #scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+   #                  labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
+```
+
+```{r}
+table(data$Type)
+```
+
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Type <- factor(plot_df$Type)
+plot_df$Post.Weekday <- factor(plot_df$Post.Weekday)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Weekday + Type, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Weekday, y = Total.Interactions, color = factor(Type), group = Type)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Weekday and Paid Status",
+       x = "Post Weekday", y = "Average Post Interactions", color = "Post Type") +
+  #scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+   #                  labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
+```
+
+```{r}
+# Density plots for each post types
+ggplot(data, aes(x = Total.Interactions, group = Type)) + 
+  geom_density(aes(color = Type, fill = Type), alpha = 0.3) +
+  xlim(c(0, 1000)) +
+  labs(title = "Distribution of Interaction Counts by Post Type", x = "Total Interaction Count", y = "Density")
+```
+
+
+```{r}
+# Graph of interactions by month for paid vs non-paid posts
+plot_df <- fb_data
+
+plot_df$Type <- factor(plot_df$Type)
+plot_df$Post.Hour <- factor(plot_df$Post.Hour)
+
+interaction_avg <- aggregate(Total.Interactions ~ Post.Hour + Type, data = plot_df, FUN = mean)
+
+ggplot(interaction_avg, aes(x = Post.Hour, y = Total.Interactions, color = factor(Type), group = Type)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Hour and Paid Status",
+       x = "Post Hour", y = "Average Post Interactions", color = "Post Type") +
+  #scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+   #                  labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+
+```
 
 ```{r}
 fb_means <- fb_data %>% 

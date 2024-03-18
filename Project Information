@@ -1,0 +1,91 @@
+Submission
+
+Submissions are due **March22nd at 1:00 pm**. 
+
+Your submission should include a link to a Google Drive folder. Copy and paste the link to the Google Drive folder as submission to this assignment. The Google Drive folder should have the following files:
+
+1. video of the presentation
+
+2. a markdown document with names of group members
+
+3. your presentation in a standard format (.ppt, .pdf, .key, etc.) that I can open. If I cannot open it then I might have to assign zero.
+
+4. R project folder
+
+
+Grading
+
+Your project will be graded by the teaching team (prof and/or TA) and your peers.
+
+Teaching team evaluation
+
+In essence, your final will be graded on four aspects
+
+Correct use of Bayesian methods (40%)
+Connection of theory and applications (20%)
+Presentation (20%)
+Documentation (20%)
+
+Correct use of Bayesian methods
+
+Your analysis should not include anything contradictory to the fundamentals of Bayesian statistics. During your video, you should not say anything statistically wrong. 
+Your analysis should cover a wide range of applications (hypothesis testing, credible intervals, posterior prediction). 
+You are expected to use knowledge from previous classes. You should explain clearly your modeling choices and decisions.
+
+Connection of application and theory
+
+As data scientists, you will work in different fields from recommender systems in music players to drug testing in pharmaceutical companies. 
+Strength in any statistical analysis is knowing the content area well and applying the correct models to the correct data. 
+Make sure to read on the area if you are not too knowledgeable. Make wise decisions in setting priors, fitting, and evaluating models accordingly.
+
+
+Presentation
+
+The presentation should be a maximum of 5 minutes. All the group members should present. The presentation videos will be shared with the rest of the class. 
+Nobody is allowed to post any videos outside of this class, EVER, that includes 10 years from now. However, if the presentations are well made, 
+they can work in favor of you for job applications or conference applications. In such cases, group members have to ask each other. 
+Please ask this in written format and keep this as proof especially if you are including a link to this presentation on your CV. 
+Other students have done this in the past.  
+
+The presentation should be accompanied by relevant visuals and clearly designed. Give yourself enough time to record the presentation. Practice. Practice more. 
+Do not stress. If English is not your native language, do not worry. It is not mine either. Other people can tell that and that is fine. 
+If you have any speech difficulties do not worry. The content of what you are saying is more important than how you are pronouncing it. 
+I understand different varieties of pronunciations easily. If I don't, I can always ask you or you can use the captioning zoom provides in your Videos. 
+The easiest tool to use would be zoom and record the session.
+
+Your presentation should answer the following question at the very minimum. Please do not use this as a checklist and feel like you are done. 
+Be creative beyond these points:
+
+- Why should the audience care about the topic? Convince them with your passion for the topic. Research the content area well.
+
+- Anything related to the data, the source, the variables of interest, any issues?
+
+- What statistical decisions you made and why you made them? Including defining your prior.
+
+- What results did you find?
+
+- Who will these results help in the future and how? 
+
+- If you had all the resources in the world and unlimited time what would you do on this topic? 
+What are the limitations of the analysis you have done that you could correct in the future with unlimited resources?
+
+
+Documentation
+
+Your code should be human- and machine-readable. Not only that the code should run but it should also be easily understandable to someone who is not doing the analysis.
+All the code should be in a folder called documentation. In the documentation folder, there should be a .Rproj file which I can open. By opening the project file, 
+I should be able to open any .R or .Rmd file to run the code without having to change file paths. The datasets used should be accessible. 
+I should just have to run for the code to work. The code should include plenty of comments.
+
+
+Rubric
+
+Are the research question(s) well designed and is the data being used relevant to the research question(s)?
+
+Did the team use appropriate statistical procedures and interpretations of results accurately?
+
+Is the project carefully thought out? Are the limitations carefully considered? Does it appear that time and effort went into the planning and implementation of the project?
+
+Are the slides well organized, readable, not full of text, featuring figures with legible labels, legends, etc.?
+
+How well did the team present? Does the presentation appear to be well practiced? Are they reading off of a script? Did everyone get a chance to say something meaningful about the project?

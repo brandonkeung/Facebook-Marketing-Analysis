@@ -2,7 +2,7 @@
 title: "Marketing on Facebook: Temporal and Targeted Approaches"
 format: revealjs
 editor: visual
-author: Anthony, Ghadah, Brandon, Nicholas, Vinh
+author: Anthony, Brandon, Ghadah, Nicholas, Vinh
 ---
 
 ```{r}
@@ -24,7 +24,12 @@ library(dplyr)
 ```{r}
 data <- read.csv("../data/dataset_Facebook.csv", sep = ";")
 data$index <- seq_along(data$Page.total.likes)
-head(data)
+fb_data <- data %>% 
+  select(index, Post.Month, Post.Weekday, Post.Hour, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
+
+# fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
+
+head(fb_data)
 ```
 
 ## Distribution of Interactions
@@ -35,7 +40,7 @@ head(data)
 
 ```{r}
 # Density plots for each post types
-ggplot(data, aes(x = Total.Interactions, group = Type)) + 
+ggplot(fb_data, aes(x = Total.Interactions, group = Type)) + 
   geom_density(aes(color = Type, fill = Type), alpha = 0.3) +
   xlim(c(0, 1000)) +
   labs(title = "Distribution of Interaction Counts by Post Type", x = "Total Interaction Count", y = "Density")
@@ -93,12 +98,99 @@ To explore these patterns, we tackle the following:
 1.  Is there a difference in interaction rates between paid and non-paid posts?
 2.  What types of posts (like images, videos, text) tend to generate higher interaction rates?
 
-## Hypothesis Testing
-
 ## Model
+
+```{r}
+fb_prior <- stan_glmer(
+  Total.Interactions ~ (1 | Post.Month), 
+  data = data, family = neg_binomial_2,
+  prior_intercept = normal(212.12, 100, autoscale = TRUE),
+  # prior = normal(0, 2.5, autoscale = TRUE),
+  prior_aux = exponential(1, autoscale = TRUE),
+  prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
+  chains = 4, iter = 5000*2, seed = 84735,
+  prior_PD=TRUE)
+
+prior_summary(fb_prior)
+
+fb_post <- update(fb_prior, prior_PD = FALSE)
+
+summary(fb_post)
+```
 
 ## Credible Interval
 
+```{r}
+tidy(fb_post, effects = "fixed", 
+     conf.int = TRUE, conf.level = 0.80)
+
+month_summary <- tidy(fb_post, effects = "ran_vals", 
+                       conf.int = TRUE, conf.level = 0.80)
+
+# Check out the results for the first & last 2 artists
+month_summary %>% 
+  select(level, conf.low, conf.high) %>% 
+  slice(1:5)
+```
+
+## Credible Interval(cont)
+
+```{r}
+# Get MCMC chains
+fb_chains <- fb_post %>%
+  spread_draws(`(Intercept)`, b[,Post.Month]) %>% 
+  mutate(mu_j = `(Intercept)` + b)
+
+# Get posterior summaries
+fb_summary_scaled <- fb_chains %>% 
+  select(-`(Intercept)`, -b) %>% 
+  mean_qi(.width = 0.8) %>% 
+  mutate(Post.Month = fct_reorder(Post.Month, mu_j),
+         exp_mu_j = exp(mu_j),
+         exp_lower = exp(.lower),
+         exp_upper = exp(.upper))
+
+# Plot by INCREASING mu_j
+ggplot(fb_summary_scaled, 
+       aes(x = Post.Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
+  geom_pointrange() +
+  xaxis_text(angle = 90, hjust = 1) +
+  labs(title = "Mean Facebook Post Interaction Count by Month")
+
+# Plot by MONTH ORDER
+fb_summary_scaled$Month <- as.integer(gsub("Post.Month:", "", fb_summary_scaled$Post.Month))
+ggplot(fb_summary_scaled, 
+       aes(x = Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
+  geom_pointrange() +
+  xaxis_text(angle = 90, hjust = 1) +
+  labs(title = "Mean Facebook Post Interaction Count by Month")
+```
+
+## Hypothesis Testing
+
+Find the 95% CI for $\mu$ and check if all $\mu_j$ fall within the 95% CI
+
+$H_o$ = All $\mu_j$ are equal $H_\alpha$ = The null hypothesis is not true. With 95% CI for $\mu$ being (5.12211236, 5.5221324), Not all of the $\mu_j$ fall within this range. Therefore we can reject the null hypothesis and conclude that not all $\mu_j$ are equal.
+
+```{r}
+posterior_interval(fb_hierarchical, prob = 0.95)
+fb_summary_scaled
+```
+
 ## Posterior Predictions
+
+```{r}
+# Posterior prediction
+set.seed(84735)
+predictions_hierarchical <- posterior_predict(fb_post, newdata = fb_means)
+
+# Posterior predictive plots
+ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical, 
+              prob_outer = 0.80) +
+  ggplot2::scale_x_continuous(labels = fb_means$Post.Month, 
+                              breaks = 1:nrow(fb_means)) +
+  xaxis_text(angle = 90, hjust = 1) +
+  geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
+```
 
 ## Results

@@ -10,7 +10,7 @@
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.551">
 
-  <meta name="author" content="Anthony, Ghadah, Brandon, Nicholas, Vinh">
+  <meta name="author" content="Anthony, Brandon, Ghadah, Nicholas, Vinh">
   <title>Marketing on Facebook: Temporal and Targeted Approaches</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -331,7 +331,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Anthony, Ghadah, Brandon, Nicholas, Vinh 
+Anthony, Brandon, Ghadah, Nicholas, Vinh 
 </div>
 </div>
 </div>
@@ -342,55 +342,20 @@ Anthony, Ghadah, Brandon, Nicholas, Vinh
 <p>2014 Facebook performance metrics of a renowned cosmetics brand containing 500 observations (posts) and 20 variables to describe its engagement</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Page.total.likes   Type Category Post.Month Post.Weekday Post.Hour Paid
-1           139441  Photo        2         12            4         3    0
-2           139441 Status        2         12            3        10    0
-3           139441  Photo        3         12            3         3    0
-4           139441  Photo        2         12            2        10    1
-5           139441  Photo        2         12            2         3    0
-6           139441 Status        2         12            1         9    0
-  Lifetime.Post.Total.Reach Lifetime.Post.Total.Impressions
-1                      2752                            5091
-2                     10460                           19057
-3                      2413                            4373
-4                     50128                           87991
-5                      7244                           13594
-6                     10472                           20849
-  Lifetime.Engaged.Users Lifetime.Post.Consumers Lifetime.Post.Consumptions
-1                    178                     109                        159
-2                   1457                    1361                       1674
-3                    177                     113                        154
-4                   2211                     790                       1119
-5                    671                     410                        580
-6                   1191                    1073                       1389
-  Lifetime.Post.Impressions.by.people.who.have.liked.your.Page
-1                                                         3078
-2                                                        11710
-3                                                         2812
-4                                                        61027
-5                                                         6228
-6                                                        16034
-  Lifetime.Post.reach.by.people.who.like.your.Page
-1                                             1640
-2                                             6112
-3                                             1503
-4                                            32048
-5                                             3200
-6                                             7852
-  Lifetime.People.who.have.liked.your.Page.and.engaged.with.your.post comment
-1                                                                 119       4
-2                                                                1108       5
-3                                                                 132       0
-4                                                                1386      58
-5                                                                 396      19
-6                                                                1016       1
-  like share Total.Interactions index
-1   79    17                100     1
-2  130    29                164     2
-3   66    14                 80     3
-4 1572   147               1777     4
-5  325    49                393     5
-6  152    33                186     6</code></pre>
+<pre><code>  index Post.Month Post.Weekday Post.Hour Total.Interactions
+1     1         12            4         3                100
+2     2         12            3        10                164
+3     3         12            3         3                 80
+4     4         12            2        10               1777
+5     5         12            2         3                393
+6     6         12            1         9                186
+  Lifetime.Engaged.Users   Type Paid
+1                    178  Photo    0
+2                   1457 Status    0
+3                    177  Photo    0
+4                   2211  Photo    1
+5                    671  Photo    0
+6                   1191 Status    0</code></pre>
 </div>
 </div>
 </section>
@@ -421,14 +386,329 @@ Anthony, Ghadah, Brandon, Nicholas, Vinh
 <li>What types of posts (like images, videos, text) tend to generate higher interaction rates?</li>
 </ol>
 </section>
-<section id="hypothesis-testing" class="slide level2">
-<h2>Hypothesis Testing</h2>
-</section>
 <section id="model" class="slide level2">
 <h2>Model</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 5.7e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.57 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.287 seconds (Warm-up)
+Chain 1:                0.302 seconds (Sampling)
+Chain 1:                0.589 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 9e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.282 seconds (Warm-up)
+Chain 2:                0.37 seconds (Sampling)
+Chain 2:                0.652 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 1.1e-05 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.35 seconds (Warm-up)
+Chain 3:                0.397 seconds (Sampling)
+Chain 3:                0.747 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 9e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.308 seconds (Warm-up)
+Chain 4:                0.323 seconds (Sampling)
+Chain 4:                0.631 seconds (Total)
+Chain 4: </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Priors for model 'fb_prior' 
+------
+Intercept (after predictors centered)
+ ~ normal(location = 212, scale = 100)
+
+Auxiliary (reciprocal_dispersion)
+ ~ exponential(rate = 1)
+
+Covariance
+ ~ decov(reg. = 1, conc. = 1, shape = 1, scale = 1)
+------
+See help('prior_summary.stanreg') for more details</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000202 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.02 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 15.514 seconds (Warm-up)
+Chain 1:                15.08 seconds (Sampling)
+Chain 1:                30.594 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000187 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.87 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 15.444 seconds (Warm-up)
+Chain 2:                16.623 seconds (Sampling)
+Chain 2:                32.067 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.000188 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.88 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 15.253 seconds (Warm-up)
+Chain 3:                13.953 seconds (Sampling)
+Chain 3:                29.206 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000176 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.76 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 10000 [  0%]  (Warmup)
+Chain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)
+Chain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)
+Chain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)
+Chain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)
+Chain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)
+Chain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)
+Chain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)
+Chain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)
+Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
+Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
+Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 15.215 seconds (Warm-up)
+Chain 4:                12.807 seconds (Sampling)
+Chain 4:                28.022 seconds (Total)
+Chain 4: </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model Info:
+ function:     stan_glmer
+ family:       neg_binomial_2 [log]
+ formula:      Total.Interactions ~ (1 | Post.Month)
+ algorithm:    sampling
+ sample:       20000 (posterior sample size)
+ priors:       see help('prior_summary')
+ observations: 500
+ groups:       Post.Month (12)
+
+Estimates:
+                                            mean   sd   10%   50%   90%
+(Intercept)                                5.3    0.1  5.2   5.3   5.4 
+b[(Intercept) Post.Month:1]               -0.1    0.2 -0.4  -0.1   0.1 
+b[(Intercept) Post.Month:2]                0.1    0.2 -0.1   0.1   0.3 
+b[(Intercept) Post.Month:3]               -0.5    0.2 -0.8  -0.5  -0.2 
+b[(Intercept) Post.Month:4]                0.0    0.2 -0.1   0.0   0.2 
+b[(Intercept) Post.Month:5]                0.2    0.2  0.0   0.2   0.4 
+b[(Intercept) Post.Month:6]               -0.2    0.2 -0.4  -0.2   0.0 
+b[(Intercept) Post.Month:7]                0.4    0.2  0.2   0.4   0.6 
+b[(Intercept) Post.Month:8]                0.1    0.2 -0.1   0.1   0.3 
+b[(Intercept) Post.Month:9]                0.2    0.2  0.0   0.2   0.4 
+b[(Intercept) Post.Month:10]              -0.1    0.1 -0.3  -0.1   0.1 
+b[(Intercept) Post.Month:11]              -0.1    0.2 -0.3  -0.1   0.1 
+b[(Intercept) Post.Month:12]               0.0    0.2 -0.2   0.0   0.2 
+reciprocal_dispersion                      1.0    0.1  0.9   1.0   1.0 
+Sigma[Post.Month:(Intercept),(Intercept)]  0.1    0.1  0.0   0.1   0.2 
+
+Fit Diagnostics:
+           mean   sd    10%   50%   90%
+mean_PPD 213.1   14.3 195.3 212.7 231.4
+
+The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help('summary.stanreg')).
+
+MCMC diagnostics
+                                          mcse Rhat n_eff
+(Intercept)                               0.0  1.0   7010
+b[(Intercept) Post.Month:1]               0.0  1.0  17437
+b[(Intercept) Post.Month:2]               0.0  1.0  16016
+b[(Intercept) Post.Month:3]               0.0  1.0  12620
+b[(Intercept) Post.Month:4]               0.0  1.0  12893
+b[(Intercept) Post.Month:5]               0.0  1.0  13135
+b[(Intercept) Post.Month:6]               0.0  1.0  13153
+b[(Intercept) Post.Month:7]               0.0  1.0  11412
+b[(Intercept) Post.Month:8]               0.0  1.0  15309
+b[(Intercept) Post.Month:9]               0.0  1.0  13656
+b[(Intercept) Post.Month:10]              0.0  1.0  12413
+b[(Intercept) Post.Month:11]              0.0  1.0  14063
+b[(Intercept) Post.Month:12]              0.0  1.0  13481
+reciprocal_dispersion                     0.0  1.0  22860
+Sigma[Post.Month:(Intercept),(Intercept)] 0.0  1.0   6191
+mean_PPD                                  0.1  1.0  21734
+log-posterior                             0.1  1.0   4418
+
+For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
+</div>
+</div>
 </section>
 <section id="credible-interval" class="slide level2">
 <h2>Credible Interval</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+  term        estimate std.error conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)     5.33    0.0940     5.20      5.45</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  level conf.low conf.high
+  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 1      -0.381     0.0841
+2 2      -0.102     0.346 
+3 3      -0.764    -0.250 
+4 4      -0.139     0.239 
+5 5      -0.0335    0.375 </code></pre>
+</div>
+</div>
+</section>
+<section id="credible-intervalcont" class="slide level2">
+<h2>Credible Interval(cont)</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-8-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing" class="slide level2">
+<h2>Hypothesis Testing</h2>
 </section>
 <section id="posterior-predictions" class="slide level2">
 <h2>Posterior Predictions</h2>
@@ -652,42 +932,80 @@ Anthony, Ghadah, Brandon, Nicholas, Vinh
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {

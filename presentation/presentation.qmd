@@ -29,7 +29,9 @@ head(data)
 
 ## Distribution of Interactions
 
-We notice that "link" posts tend to have lower but more consistent interaction counts, while "video" posts tend to have a much larger variance in their interaction counts.
+-   "link" posts tend to have LOWER counts and MORE consistent interaction counts
+
+-   "video" posts tend to have a much LARGER VARIANCE in their interaction counts
 
 ```{r}
 # Density plots for each post types
@@ -39,7 +41,7 @@ ggplot(data, aes(x = Total.Interactions, group = Type)) +
   labs(title = "Distribution of Interaction Counts by Post Type", x = "Total Interaction Count", y = "Density")
 ```
 
-## Interactions by Month and Post Type 
+## Interactions by Month and Post Type
 
 Temporally, photos and links tend to stay fairly consistent while status posts appear to spike in interactions in April and October.
 
@@ -88,8 +90,8 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
 
 To explore these patterns, we tackle the following:
 
-1.  a
-2.  a
+1.  Is there a difference in interaction rates between paid and non-paid posts?
+2.  What types of posts (like images, videos, text) tend to generate higher interaction rates?
 
 ## Hypothesis Testing
 

@@ -74,40 +74,14 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
 
 Note: No video post data exist for months 1-5
 
-## Interactions by Month and Paid Status
-
-Paid posts appear to not provide a major advantage, except for in July and during the "holiday season" (Nov - Dec).
-
-```{r}
-# Turn paid status and month into factors
-plot_df <- data
-plot_df$Paid <- factor(plot_df$Paid)
-plot_df$Post.Month <- factor(plot_df$Post.Month)
-
-# Find average interactions by month, for each paid status value
-interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Paid, data = plot_df, FUN = mean)
-
-# Graph of interactions by month for paid vs non-paid posts
-ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Paid), group = Paid)) +
-  geom_line() +
-  labs(title = "Average Post Interactions by Month and Paid Status",
-       x = "Post Month", y = "Average Post Interactions", color = "Paid Status") +
-  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
-                     labels = c("Not Paid", "Paid")) +
-  theme_minimal()
-```
-
 ## Research Questions
 
 To explore these patterns, we tackle the following:
 
-1.  Is there a significant difference in interaction rates depending on the month a post is made?
+1.  Are there significant differences in interaction rates depending on the month a post is made?
+2.  How can interactions be increased in months with lower rates?
 
-    1a. Is this pattern consistent between paid and non-paid posts?
-
-2.  What types of posts (like images, videos, text) tend to generate higher interaction rates?
-
-## Research Q1 Model
+## Model
 
 -   We construct a hierarchical model for interaction rates, grouped by month
 
@@ -120,7 +94,7 @@ fb_means <- fb_data %>%
   summarize(count = n(), avg_interactions = mean(Total.Interactions))
 ```
 
-## Research Q1 Model (cont.)
+## Model (cont.)
 
 ```{r}
 # Fit model for prior
@@ -140,7 +114,7 @@ fb_prior <- stan_glmer(
 prior_summary(fb_prior)
 ```
 
-## Research Q1 Model (cont.)
+## Model (cont.)
 
 ```{r}
 # Update to get model for posterior
@@ -262,11 +236,43 @@ ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical,
   ggplot2::scale_x_continuous(labels = fb_means$Post.Month,
                               breaks = 1:nrow(fb_means)) +
   labs(x = "Month", y = "Interaction counts") +
-  geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
+  geom_hline(yintercept = exp(5.326643), linetype = "dashed") +
+  ylim(c(0, 800))
 ```
 
 ## Takeaway
 
 -   The hierarchical model presents a significant difference in post interaction counts by month
 
--   
+-   We expect late summer months to achieve the highest engagement, while it drops off at the end of the year
+
+## Raising End-of-Year Engagement
+
+-   The company aims to increase their post engagement in these slower months
+
+-   One possible strategy is using paid marketing
+
+## Interactions by Month and Paid Status
+
+Paid posts appear to provide a major advantage during this end-of-year period (Nov - Dec).
+
+```{r}
+# Turn paid status and month into factors
+plot_df <- data
+plot_df$Paid <- factor(plot_df$Paid)
+plot_df$Post.Month <- factor(plot_df$Post.Month)
+
+# Find average interactions by month, for each paid status value
+interaction_avg <- aggregate(Total.Interactions ~ Post.Month + Paid, data = plot_df, FUN = mean)
+
+# Graph of interactions by month for paid vs non-paid posts
+ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = factor(Paid), group = Paid)) +
+  geom_line() +
+  labs(title = "Average Post Interactions by Month and Paid Status",
+       x = "Post Month", y = "Average Post Interactions", color = "Paid Status") +
+  scale_color_manual(values = c("0" = "darkorange", "1" = "darkgreen"), 
+                     labels = c("Not Paid", "Paid")) +
+  theme_minimal()
+```
+
+## 

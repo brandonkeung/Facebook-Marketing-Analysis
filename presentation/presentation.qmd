@@ -172,7 +172,7 @@ tidy(fb_post, effects = "fixed", conf.int = TRUE, conf.level = 0.80) %>%
 
 ## 80% Credible Intervals 
 
--   Below are credible intervals for each month
+-   Below are credible intervals for the first few months
 
 -   For month 1, there is an 80% chance that the mean interaction rate is between $e^{-0.3823} = 0.68$ and $e^{0.0898}= 1.09$ above the average month
 
@@ -181,8 +181,9 @@ month_summary <- tidy(fb_post, effects = "ran_vals",
                        conf.int = TRUE, conf.level = 0.80)
 
 month_summary %>%
-  select(level, conf.low, conf.high) %>%
-  slice(1:5) %>% 
+  mutate(month = level) %>% 
+  select(month, conf.low, conf.high) %>%
+  slice(1:4) %>% 
   knitr::kable()
 ```
 
@@ -247,9 +248,12 @@ fb_summary_scaled %>%
 
 ## Posterior Predictions
 
+-   Model predicts well, all no-pooled predictions are within the 80% credible intervals
+
 ```{r}
-# Posterior prediction
 set.seed(84735)
+
+# Posterior prediction
 predictions_hierarchical <- posterior_predict(fb_post, newdata = fb_means)
 
 # Posterior predictive plots
@@ -257,8 +261,12 @@ ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical,
               prob_outer = 0.80) +
   ggplot2::scale_x_continuous(labels = fb_means$Post.Month,
                               breaks = 1:nrow(fb_means)) +
-  xaxis_text(angle = 90, hjust = 1) +
+  labs(x = "Month", y = "Interaction counts") +
   geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
 ```
 
-## Results
+## Takeaway
+
+-   The hierarchical model presents a significant difference in post interaction counts by month
+
+-   

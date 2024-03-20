@@ -207,8 +207,8 @@ fb_summary_scaled <- fb_chains %>%
 ggplot(fb_summary_scaled,
        aes(x = Post.Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
-  xaxis_text(angle = 90, hjust = 1) +
-  labs(title = "Mean Facebook Post Interaction Count by Month")#
+  scale_x_discrete(labels = c(3,6,1,10,11,12,4,8,2,5,9,7)) +
+  labs(title = "Mean Facebook Post Interaction Count by Month", y = "Interaction count", x = "Month")
 ```
 
 ## Plot by Order of Month
@@ -219,20 +219,31 @@ fb_summary_scaled$Month <- as.integer(gsub("Post.Month:", "", fb_summary_scaled$
 ggplot(fb_summary_scaled,
        aes(x = Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
-  xaxis_text(angle = 90, hjust = 1) +
-  labs(title = "Mean Facebook Post Interaction Count by Month")
+  scale_x_continuous(breaks = 1:12) +
+  labs(title = "Mean Facebook Post Interaction Count by Month", y = "Interaction count")
 ```
 
 ## Hypothesis Testing
 
-Find the 95% CI for $\mu$ and check if all $\mu_j$ fall within the 95% CI
+-   We find the 95% CI for $\mu$ and check if all $\mu_j$ fall within the 95% CI
 
-$H_o$ = All $\mu_j$ are equal $H_\alpha$ = The null hypothesis is not true. With 95% CI for $\mu$ being (5.12211236, 5.5221324), Not all of the $\mu_j$ fall within this range. Therefore we can reject the null hypothesis and conclude that not all $\mu_j$ are equal.
+-   $H_o$ = All $\mu_j$ are equal vs $H_\alpha$ = The null hypothesis is not true
 
 ```{r}
-posterior_interval(fb_post, prob = 0.95)
-fb_summary_scaled
+#posterior_interval(fb_post, prob = 0.95)
+
+# Table of some mu_j values
+fb_summary_scaled %>%
+  select(Post.Month, mu_j) %>%
+  filter(Post.Month %in% c("Post.Month:1", "Post.Month:3", "Post.Month:5", "Post.Month:7","Post.Month:9")) %>% 
+  knitr::kable()
 ```
+
+## Hypothesis Testing (cont.)
+
+-   The 95% CI for $\mu$ is (5.122, 5.525), but some $\mu_j$ evidently fall above or below this range
+
+-   Therefore we reject the null hypothesis and have evidence that not all $\mu_j$ are equal
 
 ## Posterior Predictions
 

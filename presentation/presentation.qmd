@@ -330,3 +330,23 @@ nonpaid_plot <- plot_gamma_poisson(prior_shape, prior_rate, nonpaid_sum_y, nonpa
 # Combined plot
 grid.arrange(paid_plot, nonpaid_plot, ncol = 1)
 ```
+
+## Conclusion of Results
+
+-   On average, post interactions tend to drop in the later months of the year
+
+-   Paid marketing is not advantageous in all months, but it proves to be beneficial in these slower months
+
+## Limitations
+
+-   This data is limited to one cosmetics company, so we should not assume results hold true for all companies
+
+-   With unlimited resources, we would check for any major company news, promotions, and other unaccounted factors that may affect engagement levels
+
+-   Would also compare to other major companies
+
+## Application of Results
+
+-   Regardless, these results help form better priors for future studies
+
+-   Companies will be better informed about when to opt for paid marketing or not

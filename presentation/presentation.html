@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
   <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -391,108 +456,15 @@ Anthony, Brandon, Ghadah, Nicholas, Vinh
 <section id="model-cont." class="slide level2">
 <h2>Model (cont.)</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
-Chain 1: 
-Chain 1: Gradient evaluation took 6.6e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.66 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1: 
-Chain 1: 
-Chain 1: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 1: 
-Chain 1:  Elapsed Time: 0.276 seconds (Warm-up)
-Chain 1:                0.29 seconds (Sampling)
-Chain 1:                0.566 seconds (Total)
-Chain 1: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
-Chain 2: 
-Chain 2: Gradient evaluation took 8e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2: 
-Chain 2: 
-Chain 2: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 2: 
-Chain 2:  Elapsed Time: 0.299 seconds (Warm-up)
-Chain 2:                0.362 seconds (Sampling)
-Chain 2:                0.661 seconds (Total)
-Chain 2: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
-Chain 3: 
-Chain 3: Gradient evaluation took 8e-06 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3: 
-Chain 3: 
-Chain 3: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 3: 
-Chain 3:  Elapsed Time: 0.305 seconds (Warm-up)
-Chain 3:                0.383 seconds (Sampling)
-Chain 3:                0.688 seconds (Total)
-Chain 3: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
-Chain 4: 
-Chain 4: Gradient evaluation took 9e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4: 
-Chain 4: 
-Chain 4: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 4: 
-Chain 4:  Elapsed Time: 0.316 seconds (Warm-up)
-Chain 4:                0.331 seconds (Sampling)
-Chain 4:                0.647 seconds (Total)
-Chain 4: </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>fb_prior <span class="ot">&lt;-</span> <span class="fu">stan_glmer</span>(</span>
+<span id="cb2-2"><a href=""></a>  Total.Interactions <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">|</span> Post.Month), </span>
+<span id="cb2-3"><a href=""></a>  <span class="at">data =</span> data, <span class="at">family =</span> neg_binomial_2,</span>
+<span id="cb2-4"><a href=""></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="fl">212.12</span>, <span class="dv">100</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-5"><a href=""></a>  <span class="co"># prior = normal(0, 2.5, autoscale = TRUE),</span></span>
+<span id="cb2-6"><a href=""></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="dv">1</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-7"><a href=""></a>  <span class="at">prior_covariance =</span> <span class="fu">decov</span>(<span class="at">reg =</span> <span class="dv">1</span>, <span class="at">conc =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">1</span>),</span>
+<span id="cb2-8"><a href=""></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">84735</span>,</span>
+<span id="cb2-9"><a href=""></a>  <span class="at">prior_PD =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -514,108 +486,7 @@ See help('prior_summary.stanreg') for more details</code></pre>
 <section id="model-cont.-1" class="slide level2">
 <h2>Model (cont.)</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
-Chain 1: 
-Chain 1: Gradient evaluation took 0.000198 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.98 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1: 
-Chain 1: 
-Chain 1: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 1: 
-Chain 1:  Elapsed Time: 15.179 seconds (Warm-up)
-Chain 1:                14.504 seconds (Sampling)
-Chain 1:                29.683 seconds (Total)
-Chain 1: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
-Chain 2: 
-Chain 2: Gradient evaluation took 0.000176 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.76 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2: 
-Chain 2: 
-Chain 2: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 2: 
-Chain 2:  Elapsed Time: 15.032 seconds (Warm-up)
-Chain 2:                16.418 seconds (Sampling)
-Chain 2:                31.45 seconds (Total)
-Chain 2: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
-Chain 3: 
-Chain 3: Gradient evaluation took 0.000173 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.73 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3: 
-Chain 3: 
-Chain 3: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 3: 
-Chain 3:  Elapsed Time: 15.071 seconds (Warm-up)
-Chain 3:                14.271 seconds (Sampling)
-Chain 3:                29.342 seconds (Total)
-Chain 3: 
-
-SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
-Chain 4: 
-Chain 4: Gradient evaluation took 0.000171 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.71 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4: 
-Chain 4: 
-Chain 4: Iteration:    1 / 10000 [  0%]  (Warmup)
-Chain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)
-Chain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)
-Chain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)
-Chain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)
-Chain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)
-Chain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)
-Chain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)
-Chain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)
-Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
-Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
-Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
-Chain 4: 
-Chain 4:  Elapsed Time: 15.014 seconds (Warm-up)
-Chain 4:                12.893 seconds (Sampling)
-Chain 4:                27.907 seconds (Total)
-Chain 4: </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>fb_post <span class="ot">&lt;-</span> <span class="fu">update</span>(fb_prior, <span class="at">prior_PD =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">

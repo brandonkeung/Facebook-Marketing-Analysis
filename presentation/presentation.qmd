@@ -30,9 +30,8 @@ set.seed(84735)
 
 ```{r}
 data <- read.csv("../data/dataset_Facebook.csv", sep = ";")
-data$index <- seq_along(data$Page.total.likes)
 fb_data <- data %>% 
-  select(index, Post.Month, Post.Weekday, Post.Hour, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
+  select(Post.Month, Post.Weekday, Post.Hour, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
 
 # fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
 
@@ -41,7 +40,7 @@ head(fb_data)
 
 ## Distribution of Interactions
 
--   "link" posts tend to have LOWER counts and MORE consistent interaction counts
+-   "link" posts tend to have LOWER interaction counts but MORE consistent interaction counts
 
 -   "video" posts tend to have a much LARGER VARIANCE in their interaction counts
 
@@ -97,7 +96,19 @@ fb_means <- fb_data %>%
 
 ## Model (cont.)
 
-```{r}
+```{r, eval=FALSE}
+fb_prior <- stan_glmer(
+  Total.Interactions ~ (1 | Post.Month), 
+  data = data, family = neg_binomial_2,
+  prior_intercept = normal(212.12, 100, autoscale = TRUE),
+  # prior = normal(0, 2.5, autoscale = TRUE),
+  prior_aux = exponential(1, autoscale = TRUE),
+  prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
+  chains = 4, iter = 5000*2, seed = 84735,
+  prior_PD = TRUE)
+```
+
+```{r, echo=FALSE}
 # Fit model for prior
 fb_prior <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
@@ -117,10 +128,16 @@ prior_summary(fb_prior)
 
 ## Model (cont.)
 
-```{r}
+```{r, eval=FALSE}
+fb_post <- update(fb_prior, prior_PD = FALSE)
+```
+
+```{r, echo=FALSE}
 # Update to get model for posterior
 fb_post <- update(fb_prior, prior_PD = FALSE)
+```
 
+```{r, echo=FALSE}
 summary(fb_post)
 ```
 
@@ -145,7 +162,7 @@ tidy(fb_post, effects = "fixed", conf.int = TRUE, conf.level = 0.80) %>%
   knitr::kable()
 ```
 
-## 80% Credible Intervals 
+## 80% Credible Intervals
 
 -   Below are credible intervals for the first few months
 

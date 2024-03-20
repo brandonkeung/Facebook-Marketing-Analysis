@@ -33,8 +33,6 @@ data <- read.csv("../data/dataset_Facebook.csv", sep = ";")
 fb_data <- data %>% 
   select(Post.Month, Post.Weekday, Post.Hour, Total.Interactions, Lifetime.Engaged.Users, Type, Paid)
 
-# fb_data$Total.Interactions[fb_data$Total.Interactions == 0] <- 0.001
-
 head(fb_data)
 ```
 
@@ -97,29 +95,15 @@ fb_means <- fb_data %>%
 ## Model (cont.)
 
 ```{r, eval=TRUE, echo=TRUE, results='hide'}
+# Fit model for prior
 fb_prior <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
   data = data, family = neg_binomial_2,
   prior_intercept = normal(212.12, 100, autoscale = TRUE),
-  # prior = normal(0, 2.5, autoscale = TRUE),
   prior_aux = exponential(1, autoscale = TRUE),
   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
   chains = 4, iter = 5000*2, seed = 84735,
   prior_PD = TRUE)
-```
-
-```{r}
-# Fit model for prior
-# fb_prior <- stan_glmer(
-#   Total.Interactions ~ (1 | Post.Month), 
-#   data = data, family = neg_binomial_2,
-#   prior_intercept = normal(212.12, 100, autoscale = TRUE),
-#   # prior = normal(0, 2.5, autoscale = TRUE),
-#   prior_aux = exponential(1, autoscale = TRUE),
-#   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
-#   chains = 4, iter = 5000*2, seed = 84735,
-#   prior_PD = TRUE)
-
 ```
 
 ```{r}
@@ -129,12 +113,8 @@ prior_summary(fb_prior)
 ## Model (cont.)
 
 ```{r, eval=TRUE, echo=TRUE, results='hide'}
+# Update to get model for posterior
 fb_post <- update(fb_prior, prior_PD = FALSE)
-```
-
-```{r}
-# # Update to get model for posterior
-# fb_post <- update(fb_prior, prior_PD = FALSE)
 ```
 
 ```{r}

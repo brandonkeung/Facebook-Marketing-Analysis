@@ -8,7 +8,7 @@
 <link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.551">
+  <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Anthony, Brandon, Ghadah, Nicholas, Vinh">
   <title>Marketing on Facebook: Temporal and Targeted Approaches</title>
@@ -31,7 +31,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -221,8 +221,7 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -456,15 +455,15 @@ Anthony, Brandon, Ghadah, Nicholas, Vinh
 <section id="model-cont." class="slide level2">
 <h2>Model (cont.)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>fb_prior <span class="ot">&lt;-</span> <span class="fu">stan_glmer</span>(</span>
-<span id="cb2-2"><a href=""></a>  Total.Interactions <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">|</span> Post.Month), </span>
-<span id="cb2-3"><a href=""></a>  <span class="at">data =</span> data, <span class="at">family =</span> neg_binomial_2,</span>
-<span id="cb2-4"><a href=""></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="fl">212.12</span>, <span class="dv">100</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-5"><a href=""></a>  <span class="co"># prior = normal(0, 2.5, autoscale = TRUE),</span></span>
-<span id="cb2-6"><a href=""></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="dv">1</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-7"><a href=""></a>  <span class="at">prior_covariance =</span> <span class="fu">decov</span>(<span class="at">reg =</span> <span class="dv">1</span>, <span class="at">conc =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">1</span>),</span>
-<span id="cb2-8"><a href=""></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">84735</span>,</span>
-<span id="cb2-9"><a href=""></a>  <span class="at">prior_PD =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Fit model for prior</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>fb_prior <span class="ot">&lt;-</span> <span class="fu">stan_glmer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  Total.Interactions <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">|</span> Post.Month), </span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="at">data =</span> data, <span class="at">family =</span> neg_binomial_2,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="fl">212.12</span>, <span class="dv">100</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="dv">1</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="at">prior_covariance =</span> <span class="fu">decov</span>(<span class="at">reg =</span> <span class="dv">1</span>, <span class="at">conc =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">1</span>),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">84735</span>,</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="at">prior_PD =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -486,7 +485,8 @@ See help('prior_summary.stanreg') for more details</code></pre>
 <section id="model-cont.-1" class="slide level2">
 <h2>Model (cont.)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>fb_post <span class="ot">&lt;-</span> <span class="fu">update</span>(fb_prior, <span class="at">prior_PD =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Update to get model for posterior</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>fb_post <span class="ot">&lt;-</span> <span class="fu">update</span>(fb_prior, <span class="at">prior_PD =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -503,11 +503,11 @@ Model Info:
 
 Estimates:
                                             mean   sd   10%   50%   90%
-(Intercept)                                5.3    0.1  5.2   5.3   5.4 
+(Intercept)                                5.3    0.1  5.2   5.3   5.5 
 b[(Intercept) Post.Month:1]               -0.1    0.2 -0.4  -0.1   0.1 
 b[(Intercept) Post.Month:2]                0.1    0.2 -0.1   0.1   0.3 
-b[(Intercept) Post.Month:3]               -0.5    0.2 -0.8  -0.5  -0.2 
-b[(Intercept) Post.Month:4]                0.0    0.2 -0.1   0.0   0.2 
+b[(Intercept) Post.Month:3]               -0.5    0.2 -0.8  -0.5  -0.3 
+b[(Intercept) Post.Month:4]                0.1    0.2 -0.1   0.0   0.2 
 b[(Intercept) Post.Month:5]                0.2    0.2  0.0   0.2   0.4 
 b[(Intercept) Post.Month:6]               -0.2    0.2 -0.4  -0.2   0.0 
 b[(Intercept) Post.Month:7]                0.4    0.2  0.2   0.4   0.6 
@@ -515,35 +515,35 @@ b[(Intercept) Post.Month:8]                0.1    0.2 -0.1   0.1   0.3
 b[(Intercept) Post.Month:9]                0.2    0.2  0.0   0.2   0.4 
 b[(Intercept) Post.Month:10]              -0.1    0.1 -0.3  -0.1   0.1 
 b[(Intercept) Post.Month:11]              -0.1    0.2 -0.3  -0.1   0.1 
-b[(Intercept) Post.Month:12]               0.0    0.2 -0.2   0.0   0.2 
+b[(Intercept) Post.Month:12]               0.0    0.1 -0.2   0.0   0.2 
 reciprocal_dispersion                      1.0    0.1  0.9   1.0   1.0 
 Sigma[Post.Month:(Intercept),(Intercept)]  0.1    0.1  0.0   0.1   0.2 
 
 Fit Diagnostics:
            mean   sd    10%   50%   90%
-mean_PPD 213.1   14.3 195.3 212.7 231.4
+mean_PPD 213.3   14.3 195.3 212.7 231.8
 
 The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help('summary.stanreg')).
 
 MCMC diagnostics
                                           mcse Rhat n_eff
-(Intercept)                               0.0  1.0   7010
-b[(Intercept) Post.Month:1]               0.0  1.0  17437
-b[(Intercept) Post.Month:2]               0.0  1.0  16016
-b[(Intercept) Post.Month:3]               0.0  1.0  12620
-b[(Intercept) Post.Month:4]               0.0  1.0  12893
-b[(Intercept) Post.Month:5]               0.0  1.0  13135
-b[(Intercept) Post.Month:6]               0.0  1.0  13153
-b[(Intercept) Post.Month:7]               0.0  1.0  11412
-b[(Intercept) Post.Month:8]               0.0  1.0  15309
-b[(Intercept) Post.Month:9]               0.0  1.0  13656
-b[(Intercept) Post.Month:10]              0.0  1.0  12413
-b[(Intercept) Post.Month:11]              0.0  1.0  14063
-b[(Intercept) Post.Month:12]              0.0  1.0  13481
-reciprocal_dispersion                     0.0  1.0  22860
-Sigma[Post.Month:(Intercept),(Intercept)] 0.0  1.0   6191
-mean_PPD                                  0.1  1.0  21734
-log-posterior                             0.1  1.0   4418
+(Intercept)                               0.0  1.0   5638
+b[(Intercept) Post.Month:1]               0.0  1.0  14220
+b[(Intercept) Post.Month:2]               0.0  1.0  13942
+b[(Intercept) Post.Month:3]               0.0  1.0  11951
+b[(Intercept) Post.Month:4]               0.0  1.0  10471
+b[(Intercept) Post.Month:5]               0.0  1.0  11704
+b[(Intercept) Post.Month:6]               0.0  1.0  11133
+b[(Intercept) Post.Month:7]               0.0  1.0  10710
+b[(Intercept) Post.Month:8]               0.0  1.0  12647
+b[(Intercept) Post.Month:9]               0.0  1.0  12097
+b[(Intercept) Post.Month:10]              0.0  1.0  10211
+b[(Intercept) Post.Month:11]              0.0  1.0  11241
+b[(Intercept) Post.Month:12]              0.0  1.0   9887
+reciprocal_dispersion                     0.0  1.0  23226
+Sigma[Post.Month:(Intercept),(Intercept)] 0.0  1.0   6590
+mean_PPD                                  0.1  1.0  22301
+log-posterior                             0.1  1.0   5190
 
 For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
 </div>
@@ -553,7 +553,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <h2>Diagnostics</h2>
 <p>Below are some trace plots from our model, and they appear to be mixing quickly.</p>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="global-parameters" class="slide level2">
 <h2>Global Parameters</h2>
 <ul>
@@ -575,10 +575,10 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">5.327705</td>
-<td style="text-align: right;">0.0940492</td>
-<td style="text-align: right;">5.20223</td>
-<td style="text-align: right;">5.448592</td>
+<td style="text-align: right;">5.326643</td>
+<td style="text-align: right;">0.0933174</td>
+<td style="text-align: right;">5.20059</td>
+<td style="text-align: right;">5.451064</td>
 </tr>
 </tbody>
 </table>
@@ -604,23 +604,23 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">-0.3810953</td>
-<td style="text-align: right;">0.0841310</td>
+<td style="text-align: right;">-0.3823472</td>
+<td style="text-align: right;">0.0898314</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2</td>
-<td style="text-align: right;">-0.1019151</td>
-<td style="text-align: right;">0.3456414</td>
+<td style="text-align: right;">-0.1051990</td>
+<td style="text-align: right;">0.3415526</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">3</td>
-<td style="text-align: right;">-0.7638828</td>
-<td style="text-align: right;">-0.2498138</td>
+<td style="text-align: right;">-0.7644935</td>
+<td style="text-align: right;">-0.2552033</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">4</td>
-<td style="text-align: right;">-0.1391176</td>
-<td style="text-align: right;">0.2389845</td>
+<td style="text-align: right;">-0.1366707</td>
+<td style="text-align: right;">0.2433395</td>
 </tr>
 </tbody>
 </table>
@@ -630,11 +630,11 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <section id="plot-by-increasing-mean" class="slide level2">
 <h2>Plot by Increasing Mean</h2>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
 <section id="plot-by-order-of-month" class="slide level2">
 <h2>Plot by Order of Month</h2>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="hypothesis-testing" class="slide level2">
 <h2>Hypothesis Testing</h2>
 <ul>
@@ -653,23 +653,23 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Post.Month:1</td>
-<td style="text-align: right;">5.181893</td>
+<td style="text-align: right;">5.180666</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Post.Month:3</td>
-<td style="text-align: right;">4.821559</td>
+<td style="text-align: right;">4.818727</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Post.Month:5</td>
-<td style="text-align: right;">5.491963</td>
+<td style="text-align: right;">5.493499</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Post.Month:7</td>
-<td style="text-align: right;">5.699422</td>
+<td style="text-align: right;">5.701782</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Post.Month:9</td>
-<td style="text-align: right;">5.551081</td>
+<td style="text-align: right;">5.553785</td>
 </tr>
 </tbody>
 </table>
@@ -689,7 +689,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <li>Model predicts well, all no-pooled predictions are within the 80% credible intervals</li>
 </ul>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="takeaway" class="slide level2">
 <h2>Takeaway</h2>
 <ul>
@@ -708,7 +708,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <h2>Interactions by Month and Paid Status</h2>
 <p>Paid posts appear to provide a major advantage during this end-of-year period (Nov - Dec).</p>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="model-1" class="slide level2">
 <h2>Model</h2>
 <ul>
@@ -716,12 +716,12 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <li><p>We use a Gamma(50, 0.25) prior for both so we can directly compare posteriors</p></li>
 </ul>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="posterior-distributions" class="slide level2">
 <h2>Posterior Distributions</h2>
 <p>We see much higher post engagement in paid posts during these end-of-year months.</p>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
 <section id="conclusion-of-results" class="slide level2">
 <h2>Conclusion of Results</h2>
 <ul>
@@ -743,10 +743,8 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <li><p>Regardless, these results help form better priors for future studies</p></li>
 <li><p>Companies will be better informed about when to opt for paid marketing or not</p></li>
 </ul>
-<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
-</div>
 </div>
 </section>
     </div>
@@ -775,6 +773,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
+'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -960,80 +959,42 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1111,27 +1072,10 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
         // clear code selection
         e.clearSelection();
       });
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-        }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
-            }
-          }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      function tippyHover(el, contentFn) {
         const config = {
           allowHTML: true,
+          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1141,17 +1085,8 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start',
+          placement: 'bottom-start'
         };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1165,11 +1100,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
+          return note.innerHTML;
         });
       }
       const findCites = (el) => {

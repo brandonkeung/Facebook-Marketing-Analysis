@@ -18,6 +18,7 @@ library(forcats)
 library(broom.mixed)
 library(dplyr)
 library(kableExtra)
+library(gridExtra)
 
 # Set seed
 set.seed(84735)
@@ -275,4 +276,57 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
   theme_minimal()
 ```
 
-## 
+## Model
+
+-   We fit a Gamma-Poisson model for both paid and non-paid posts during months 9-12 to understand their difference in effect
+
+-   We use a Gamma(50, 0.25) prior for both so we can directly compare posteriors
+
+```{r}
+plot_gamma(50, 0.25)
+```
+
+```{r}
+# Get paid and non-paid data
+paid_data <- fb_data[fb_data$Paid == 1 & fb_data$Post.Month %in% c(9,10,11,12),]
+nonpaid_data <- fb_data[fb_data$Paid == 0 & fb_data$Post.Month %in% c(9,10,11,12),]
+```
+
+```{r}
+# Prior parameters
+prior_shape <- 250
+prior_rate <- 1
+
+# Plot posterior for paid model
+paid_sum_y <- sum(paid_data$Total.Interactions, na.rm = TRUE)
+paid_n <- nrow(na.omit(paid_data[!is.na(paid_data$Total.Interactions), ]))
+paid_model <- summarize_gamma_poisson(shape = prior_shape, rate = prior_rate, 
+                        sum_y = paid_sum_y, n = paid_n)
+
+# Plot posterior for non-paid model
+nonpaid_sum_y <- sum(nonpaid_data$Total.Interactions, na.rm = TRUE)
+nonpaid_n <- nrow(na.omit(nonpaid_data[!is.na(nonpaid_data$Total.Interactions), ]))
+nonpaid_model <- summarize_gamma_poisson(shape = prior_shape, rate = prior_rate, 
+                        sum_y = nonpaid_sum_y, n = nonpaid_n)
+```
+
+## Posterior Distributions
+
+We see much higher post engagement in paid posts during these end-of-year months.
+
+```{r}
+# Paid model posterior
+#plot_gamma(14320, 49)
+paid_plot <- plot_gamma_poisson(prior_shape, prior_rate, paid_sum_y, paid_n) +
+  labs(title = "Interaction counts for paid posts") +
+  xlim(c(165, 315))
+
+# Non-paid model posterior
+#plot_gamma(25606, 144)
+nonpaid_plot <- plot_gamma_poisson(prior_shape, prior_rate, nonpaid_sum_y, nonpaid_n) +
+  labs(title = "Interaction counts for non-paid posts") +
+  xlim(c(165, 315))
+
+# Combined plot
+grid.arrange(paid_plot, nonpaid_plot, ncol = 1)
+```

@@ -8,7 +8,7 @@
 <link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.551">
+  <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Anthony, Brandon, Ghadah, Nicholas, Vinh">
   <title>Marketing on Facebook: Temporal and Targeted Approaches</title>
@@ -156,8 +156,7 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -382,19 +381,27 @@ Anthony, Brandon, Ghadah, Nicholas, Vinh
 <h2>Research Questions</h2>
 <p>To explore these patterns, we tackle the following:</p>
 <ol type="1">
-<li>Is there a difference in interaction rates between paid and non-paid posts?</li>
-<li>What types of posts (like images, videos, text) tend to generate higher interaction rates?</li>
+<li><p>Is there a significant difference in interaction rates depending on the month a post is made?</p>
+<p>1a. Is this pattern consistent between paid and non-paid posts?</p></li>
+<li><p>What types of posts (like images, videos, text) tend to generate higher interaction rates?</p></li>
 </ol>
 </section>
-<section id="model" class="slide level2">
-<h2>Model</h2>
+<section id="research-q1-model" class="slide level2">
+<h2>Research Q1 Model</h2>
+<ul>
+<li><p>We construct a hierarchical model for interaction rates, grouped by month</p></li>
+<li><p>We start with a weakly informative prior based on previously observed rates, but with a large variance</p></li>
+</ul>
+</section>
+<section id="research-q1-model-cont." class="slide level2">
+<h2>Research Q1 Model (cont.)</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 5.7e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.57 seconds.
+Chain 1: Gradient evaluation took 3.6e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.36 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -411,15 +418,15 @@ Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 0.287 seconds (Warm-up)
-Chain 1:                0.302 seconds (Sampling)
-Chain 1:                0.589 seconds (Total)
+Chain 1:  Elapsed Time: 0.290473 seconds (Warm-up)
+Chain 1:                0.306066 seconds (Sampling)
+Chain 1:                0.596539 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 9e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+Chain 2: Gradient evaluation took 8e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -436,15 +443,15 @@ Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 0.282 seconds (Warm-up)
-Chain 2:                0.37 seconds (Sampling)
-Chain 2:                0.652 seconds (Total)
+Chain 2:  Elapsed Time: 0.278112 seconds (Warm-up)
+Chain 2:                0.34758 seconds (Sampling)
+Chain 2:                0.625692 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 1.1e-05 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
+Chain 3: Gradient evaluation took 1.3e-05 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -461,15 +468,15 @@ Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 0.35 seconds (Warm-up)
-Chain 3:                0.397 seconds (Sampling)
-Chain 3:                0.747 seconds (Total)
+Chain 3:  Elapsed Time: 0.292692 seconds (Warm-up)
+Chain 3:                0.36273 seconds (Sampling)
+Chain 3:                0.655422 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 9e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+Chain 4: Gradient evaluation took 7e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -486,11 +493,13 @@ Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 0.308 seconds (Warm-up)
-Chain 4:                0.323 seconds (Sampling)
-Chain 4:                0.631 seconds (Total)
+Chain 4:  Elapsed Time: 0.308535 seconds (Warm-up)
+Chain 4:                0.340795 seconds (Sampling)
+Chain 4:                0.64933 seconds (Total)
 Chain 4: </code></pre>
 </div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Priors for model 'fb_prior' 
 ------
@@ -505,12 +514,17 @@ Covariance
 ------
 See help('prior_summary.stanreg') for more details</code></pre>
 </div>
+</div>
+</section>
+<section id="research-q1-model-cont.-1" class="slide level2">
+<h2>Research Q1 Model (cont.)</h2>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000202 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.02 seconds.
+Chain 1: Gradient evaluation took 0.000113 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.13 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -527,15 +541,15 @@ Chain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 15.514 seconds (Warm-up)
-Chain 1:                15.08 seconds (Sampling)
-Chain 1:                30.594 seconds (Total)
+Chain 1:  Elapsed Time: 8.27565 seconds (Warm-up)
+Chain 1:                8.26425 seconds (Sampling)
+Chain 1:                16.5399 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 0.000187 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.87 seconds.
+Chain 2: Gradient evaluation took 0.000127 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.27 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -552,15 +566,15 @@ Chain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 15.444 seconds (Warm-up)
-Chain 2:                16.623 seconds (Sampling)
-Chain 2:                32.067 seconds (Total)
+Chain 2:  Elapsed Time: 8.0805 seconds (Warm-up)
+Chain 2:                9.12686 seconds (Sampling)
+Chain 2:                17.2074 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 0.000188 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.88 seconds.
+Chain 3: Gradient evaluation took 0.000136 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.36 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -577,15 +591,15 @@ Chain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 3: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 15.253 seconds (Warm-up)
-Chain 3:                13.953 seconds (Sampling)
-Chain 3:                29.206 seconds (Total)
+Chain 3:  Elapsed Time: 8.40387 seconds (Warm-up)
+Chain 3:                9.14334 seconds (Sampling)
+Chain 3:                17.5472 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 0.000176 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.76 seconds.
+Chain 4: Gradient evaluation took 0.000114 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.14 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -602,9 +616,9 @@ Chain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)
 Chain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)
 Chain 4: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 15.215 seconds (Warm-up)
-Chain 4:                12.807 seconds (Sampling)
-Chain 4:                28.022 seconds (Total)
+Chain 4:  Elapsed Time: 8.58391 seconds (Warm-up)
+Chain 4:                8.4808 seconds (Sampling)
+Chain 4:                17.0647 seconds (Total)
 Chain 4: </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -621,11 +635,11 @@ Model Info:
 
 Estimates:
                                             mean   sd   10%   50%   90%
-(Intercept)                                5.3    0.1  5.2   5.3   5.4 
+(Intercept)                                5.3    0.1  5.2   5.3   5.5 
 b[(Intercept) Post.Month:1]               -0.1    0.2 -0.4  -0.1   0.1 
 b[(Intercept) Post.Month:2]                0.1    0.2 -0.1   0.1   0.3 
-b[(Intercept) Post.Month:3]               -0.5    0.2 -0.8  -0.5  -0.2 
-b[(Intercept) Post.Month:4]                0.0    0.2 -0.1   0.0   0.2 
+b[(Intercept) Post.Month:3]               -0.5    0.2 -0.8  -0.5  -0.3 
+b[(Intercept) Post.Month:4]                0.1    0.2 -0.1   0.0   0.2 
 b[(Intercept) Post.Month:5]                0.2    0.2  0.0   0.2   0.4 
 b[(Intercept) Post.Month:6]               -0.2    0.2 -0.4  -0.2   0.0 
 b[(Intercept) Post.Month:7]                0.4    0.2  0.2   0.4   0.6 
@@ -633,92 +647,137 @@ b[(Intercept) Post.Month:8]                0.1    0.2 -0.1   0.1   0.3
 b[(Intercept) Post.Month:9]                0.2    0.2  0.0   0.2   0.4 
 b[(Intercept) Post.Month:10]              -0.1    0.1 -0.3  -0.1   0.1 
 b[(Intercept) Post.Month:11]              -0.1    0.2 -0.3  -0.1   0.1 
-b[(Intercept) Post.Month:12]               0.0    0.2 -0.2   0.0   0.2 
+b[(Intercept) Post.Month:12]               0.0    0.1 -0.2   0.0   0.2 
 reciprocal_dispersion                      1.0    0.1  0.9   1.0   1.0 
 Sigma[Post.Month:(Intercept),(Intercept)]  0.1    0.1  0.0   0.1   0.2 
 
 Fit Diagnostics:
            mean   sd    10%   50%   90%
-mean_PPD 213.1   14.3 195.3 212.7 231.4
+mean_PPD 213.3   14.3 195.3 212.7 231.8
 
 The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help('summary.stanreg')).
 
 MCMC diagnostics
                                           mcse Rhat n_eff
-(Intercept)                               0.0  1.0   7010
-b[(Intercept) Post.Month:1]               0.0  1.0  17437
-b[(Intercept) Post.Month:2]               0.0  1.0  16016
-b[(Intercept) Post.Month:3]               0.0  1.0  12620
-b[(Intercept) Post.Month:4]               0.0  1.0  12893
-b[(Intercept) Post.Month:5]               0.0  1.0  13135
-b[(Intercept) Post.Month:6]               0.0  1.0  13153
-b[(Intercept) Post.Month:7]               0.0  1.0  11412
-b[(Intercept) Post.Month:8]               0.0  1.0  15309
-b[(Intercept) Post.Month:9]               0.0  1.0  13656
-b[(Intercept) Post.Month:10]              0.0  1.0  12413
-b[(Intercept) Post.Month:11]              0.0  1.0  14063
-b[(Intercept) Post.Month:12]              0.0  1.0  13481
-reciprocal_dispersion                     0.0  1.0  22860
-Sigma[Post.Month:(Intercept),(Intercept)] 0.0  1.0   6191
-mean_PPD                                  0.1  1.0  21734
-log-posterior                             0.1  1.0   4418
+(Intercept)                               0.0  1.0   5638
+b[(Intercept) Post.Month:1]               0.0  1.0  14220
+b[(Intercept) Post.Month:2]               0.0  1.0  13942
+b[(Intercept) Post.Month:3]               0.0  1.0  11951
+b[(Intercept) Post.Month:4]               0.0  1.0  10471
+b[(Intercept) Post.Month:5]               0.0  1.0  11704
+b[(Intercept) Post.Month:6]               0.0  1.0  11133
+b[(Intercept) Post.Month:7]               0.0  1.0  10710
+b[(Intercept) Post.Month:8]               0.0  1.0  12647
+b[(Intercept) Post.Month:9]               0.0  1.0  12097
+b[(Intercept) Post.Month:10]              0.0  1.0  10211
+b[(Intercept) Post.Month:11]              0.0  1.0  11241
+b[(Intercept) Post.Month:12]              0.0  1.0   9887
+reciprocal_dispersion                     0.0  1.0  23226
+Sigma[Post.Month:(Intercept),(Intercept)] 0.0  1.0   6590
+mean_PPD                                  0.1  1.0  22301
+log-posterior                             0.1  1.0   5190
 
 For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
 </div>
 </div>
 </section>
-<section id="credible-interval" class="slide level2">
-<h2>Credible Interval</h2>
+<section id="diagnostics" class="slide level2">
+<h2>Diagnostics</h2>
+<p>Below are some trace plots from our model, and they appear to be mixing quickly.</p>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="global-parameters" class="slide level2">
+<h2>Global Parameters</h2>
+<p>We must exponentiate these parameter values because a log link is used in our model. For example, the average month has a mean interaction count between <span class="math inline">\(exp(5.20059) = 181.4\)</span> and <span class="math inline">\(exp(5.451064) = 233.0\)</span>.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 5
-  term        estimate std.error conf.low conf.high
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)     5.33    0.0940     5.20      5.45</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  level conf.low conf.high
-  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 1      -0.381     0.0841
-2 2      -0.102     0.346 
-3 3      -0.764    -0.250 
-4 4      -0.139     0.239 
-5 5      -0.0335    0.375 </code></pre>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">5.326643</td>
+<td style="text-align: right;">0.0933174</td>
+<td style="text-align: right;">5.20059</td>
+<td style="text-align: right;">5.451064</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
-<section id="credible-intervalcont" class="slide level2">
-<h2>Credible Interval(cont)</h2>
+<section id="credible-intervals" class="slide level2">
+<h2>Credible Intervals</h2>
+<p>Similarly,</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-8-2.png" width="960"></p>
-</figure>
-</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">level</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">-0.3823472</td>
+<td style="text-align: right;">0.0898314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">-0.1051990</td>
+<td style="text-align: right;">0.3415526</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">-0.7644935</td>
+<td style="text-align: right;">-0.2552033</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">-0.1366707</td>
+<td style="text-align: right;">0.2433395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">-0.0352717</td>
+<td style="text-align: right;">0.3776883</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
+<section id="plot-by-increasing-mean" class="slide level2">
+<h2>Plot by Increasing Mean</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="plot-by-order-of-month" class="slide level2">
+<h2>Plot by Order of Month</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="hypothesis-testing" class="slide level2">
 <h2>Hypothesis Testing</h2>
+<p>Find the 95% CI for <span class="math inline">\(\mu\)</span> and check if all <span class="math inline">\(\mu_j\)</span> fall within the 95% CI</p>
+<p><span class="math inline">\(H_o\)</span> = All <span class="math inline">\(\mu_j\)</span> are equal <span class="math inline">\(H_\alpha\)</span> = The null hypothesis is not true. With 95% CI for <span class="math inline">\(\mu\)</span> being (5.12211236, 5.5221324), Not all of the <span class="math inline">\(\mu_j\)</span> fall within this range. Therefore we can reject the null hypothesis and conclude that not all <span class="math inline">\(\mu_j\)</span> are equal.</p>
 </section>
 <section id="posterior-predictions" class="slide level2">
 <h2>Posterior Predictions</h2>
 </section>
 <section id="results" class="slide level2">
 <h2>Results</h2>
-<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
-</div>
 </div>
 </section>
     </div>
@@ -747,6 +806,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
+'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -932,80 +992,42 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1083,27 +1105,10 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
         // clear code selection
         e.clearSelection();
       });
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-        }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
-            }
-          }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      function tippyHover(el, contentFn) {
         const config = {
           allowHTML: true,
+          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1113,17 +1118,8 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start',
+          placement: 'bottom-start'
         };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1137,11 +1133,7 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
+          return note.innerHTML;
         });
       }
       const findCites = (el) => {

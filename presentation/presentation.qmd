@@ -2,6 +2,8 @@
 title: "Marketing on Facebook: Temporal and Targeted Approaches"
 format: revealjs
 editor: visual
+execute: 
+  echo: false
 author: Anthony, Brandon, Ghadah, Nicholas, Vinh
 ---
 
@@ -15,6 +17,10 @@ library(rstanarm)
 library(forcats)
 library(broom.mixed)
 library(dplyr)
+library(kableExtra)
+
+# Set seed
+set.seed(84735)
 ```
 
 ## Facebook Dataset
@@ -95,12 +101,29 @@ ggplot(interaction_avg, aes(x = Post.Month, y = Total.Interactions, color = fact
 
 To explore these patterns, we tackle the following:
 
-1.  Is there a difference in interaction rates between paid and non-paid posts?
+1.  Is there a significant difference in interaction rates depending on the month a post is made?
+
+    1a. Is this pattern consistent between paid and non-paid posts?
+
 2.  What types of posts (like images, videos, text) tend to generate higher interaction rates?
 
-## Model
+## Research Q1 Model
+
+-   We construct a hierarchical model for interaction rates, grouped by month
+
+-   We start with a weakly informative prior based on previously observed rates, but with a large variance
 
 ```{r}
+# Find average interactions by month
+fb_means <- fb_data %>% 
+  group_by(Post.Month) %>% 
+  summarize(count = n(), avg_interactions = mean(Total.Interactions))
+```
+
+## Research Q1 Model (cont.)
+
+```{r}
+# Fit model for prior
 fb_prior <- stan_glmer(
   Total.Interactions ~ (1 | Post.Month), 
   data = data, family = neg_binomial_2,
@@ -109,57 +132,91 @@ fb_prior <- stan_glmer(
   prior_aux = exponential(1, autoscale = TRUE),
   prior_covariance = decov(reg = 1, conc = 1, shape = 1, scale = 1),
   chains = 4, iter = 5000*2, seed = 84735,
-  prior_PD=TRUE)
+  prior_PD = TRUE)
 
+```
+
+```{r}
 prior_summary(fb_prior)
+```
 
+## Research Q1 Model (cont.)
+
+```{r}
+# Update to get model for posterior
 fb_post <- update(fb_prior, prior_PD = FALSE)
 
 summary(fb_post)
 ```
 
-## Credible Interval
+## Diagnostics
+
+Below are some trace plots from our model, and they appear to be mixing quickly.
 
 ```{r}
-tidy(fb_post, effects = "fixed", 
-     conf.int = TRUE, conf.level = 0.80)
+# Make trace plots
+mcmc_trace(fb_post, regex_pars = c("2", "5", "8"))
 
-month_summary <- tidy(fb_post, effects = "ran_vals", 
-                       conf.int = TRUE, conf.level = 0.80)
-
-# Check out the results for the first & last 2 artists
-month_summary %>% 
-  select(level, conf.low, conf.high) %>% 
-  slice(1:5)
 ```
 
-## Credible Interval(cont)
+## Global Parameters
+
+-   We must exponentiate these parameter values because a log link is used in our model
+
+-   The average month likely has a mean interaction count between $e^{5.20059}= 181.4$ and $e^{5.451064} = 233.0$
+
+```{r}
+tidy(fb_post, effects = "fixed", conf.int = TRUE, conf.level = 0.80) %>% 
+  knitr::kable()
+```
+
+## 80% Credible Intervals 
+
+-   Below are credible intervals for each month
+
+-   For month 1, there is an 80% chance that the mean interaction rate is between $e^{-0.3823} = 0.68$ and $e^{0.0898}= 1.09$ above the average month
+
+```{r}
+month_summary <- tidy(fb_post, effects = "ran_vals",
+                       conf.int = TRUE, conf.level = 0.80)
+
+month_summary %>%
+  select(level, conf.low, conf.high) %>%
+  slice(1:5) %>% 
+  knitr::kable()
+```
+
+## Plot by Increasing Mean
 
 ```{r}
 # Get MCMC chains
 fb_chains <- fb_post %>%
-  spread_draws(`(Intercept)`, b[,Post.Month]) %>% 
+  spread_draws(`(Intercept)`, b[,Post.Month]) %>%
   mutate(mu_j = `(Intercept)` + b)
 
 # Get posterior summaries
-fb_summary_scaled <- fb_chains %>% 
-  select(-`(Intercept)`, -b) %>% 
-  mean_qi(.width = 0.8) %>% 
+fb_summary_scaled <- fb_chains %>%
+  select(-`(Intercept)`, -b) %>%
+  mean_qi(.width = 0.8) %>%
   mutate(Post.Month = fct_reorder(Post.Month, mu_j),
          exp_mu_j = exp(mu_j),
          exp_lower = exp(.lower),
          exp_upper = exp(.upper))
 
 # Plot by INCREASING mu_j
-ggplot(fb_summary_scaled, 
+ggplot(fb_summary_scaled,
        aes(x = Post.Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
   xaxis_text(angle = 90, hjust = 1) +
-  labs(title = "Mean Facebook Post Interaction Count by Month")
+  labs(title = "Mean Facebook Post Interaction Count by Month")#
+```
 
+## Plot by Order of Month
+
+```{r}
 # Plot by MONTH ORDER
 fb_summary_scaled$Month <- as.integer(gsub("Post.Month:", "", fb_summary_scaled$Post.Month))
-ggplot(fb_summary_scaled, 
+ggplot(fb_summary_scaled,
        aes(x = Month, y = exp_mu_j, ymin = exp_lower, ymax = exp_upper)) +
   geom_pointrange() +
   xaxis_text(angle = 90, hjust = 1) +
@@ -173,7 +230,7 @@ Find the 95% CI for $\mu$ and check if all $\mu_j$ fall within the 95% CI
 $H_o$ = All $\mu_j$ are equal $H_\alpha$ = The null hypothesis is not true. With 95% CI for $\mu$ being (5.12211236, 5.5221324), Not all of the $\mu_j$ fall within this range. Therefore we can reject the null hypothesis and conclude that not all $\mu_j$ are equal.
 
 ```{r}
-posterior_interval(fb_hierarchical, prob = 0.95)
+posterior_interval(fb_post, prob = 0.95)
 fb_summary_scaled
 ```
 
@@ -185,9 +242,9 @@ set.seed(84735)
 predictions_hierarchical <- posterior_predict(fb_post, newdata = fb_means)
 
 # Posterior predictive plots
-ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical, 
+ppc_intervals(fb_means$avg_interactions, yrep = predictions_hierarchical,
               prob_outer = 0.80) +
-  ggplot2::scale_x_continuous(labels = fb_means$Post.Month, 
+  ggplot2::scale_x_continuous(labels = fb_means$Post.Month,
                               breaks = 1:nrow(fb_means)) +
   xaxis_text(angle = 90, hjust = 1) +
   geom_hline(yintercept = mean(fb_data$Total.Interactions), linetype = "dashed")
